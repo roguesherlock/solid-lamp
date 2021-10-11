@@ -4,9 +4,15 @@ defmodule GumroadWeb.ProductLiveTest do
   import Phoenix.LiveViewTest
   import Gumroad.ProductsFixtures
 
-  @create_attrs %{description: "some description", name: "some name", price: "120.5"}
-  @update_attrs %{description: "some updated description", name: "some updated name", price: "456.7"}
+  @create_attrs %{description: "some description", name: "some name", price: "120"}
+  @update_attrs %{
+    description: "some updated description",
+    name: "some updated name",
+    price: "456"
+  }
   @invalid_attrs %{description: nil, name: nil, price: nil}
+
+  setup :register_and_log_in_user
 
   defp create_product(_) do
     product = product_fixture()

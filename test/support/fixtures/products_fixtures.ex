@@ -13,7 +13,7 @@ defmodule Gumroad.ProductsFixtures do
       |> Enum.into(%{
         description: "some description",
         name: "some name",
-        price: "120.5"
+        price: 120
       })
       |> Gumroad.Products.create_product()
 
@@ -24,11 +24,14 @@ defmodule Gumroad.ProductsFixtures do
   Generate a review.
   """
   def review_fixture(attrs \\ %{}) do
+    product = product_fixture()
+
     {:ok, review} =
       attrs
       |> Enum.into(%{
         description: "some description",
-        rating: 120.5
+        rating: 2.5,
+        product_id: product.id
       })
       |> Gumroad.Products.create_review()
 

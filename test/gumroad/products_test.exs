@@ -21,12 +21,12 @@ defmodule Gumroad.ProductsTest do
     end
 
     test "create_product/1 with valid data creates a product" do
-      valid_attrs = %{description: "some description", name: "some name", price: "120.5"}
+      valid_attrs = %{description: "some description", name: "some name", price: 120}
 
       assert {:ok, %Product{} = product} = Products.create_product(valid_attrs)
       assert product.description == "some description"
       assert product.name == "some name"
-      assert product.price == Decimal.new("120.5")
+      assert product.price == 120
     end
 
     test "create_product/1 with invalid data returns error changeset" do
@@ -35,12 +35,17 @@ defmodule Gumroad.ProductsTest do
 
     test "update_product/2 with valid data updates the product" do
       product = product_fixture()
-      update_attrs = %{description: "some updated description", name: "some updated name", price: "456.7"}
+
+      update_attrs = %{
+        description: "some updated description",
+        name: "some updated name",
+        price: 456
+      }
 
       assert {:ok, %Product{} = product} = Products.update_product(product, update_attrs)
       assert product.description == "some updated description"
       assert product.name == "some updated name"
-      assert product.price == Decimal.new("456.7")
+      assert product.price == 456
     end
 
     test "update_product/2 with invalid data returns error changeset" do
@@ -74,16 +79,17 @@ defmodule Gumroad.ProductsTest do
     end
 
     test "get_review!/1 returns the review with given id" do
-      review = review_fixture()
+      review = review_fixture() |> Repo.preload(:product)
       assert Products.get_review!(review.id) == review
     end
 
     test "create_review/1 with valid data creates a review" do
-      valid_attrs = %{description: "some description", rating: 120.5}
+      product = product_fixture()
+      valid_attrs = %{description: "some description", rating: 120, product_id: product.id}
 
       assert {:ok, %Review{} = review} = Products.create_review(valid_attrs)
       assert review.description == "some description"
-      assert review.rating == 120.5
+      assert review.rating == 120
     end
 
     test "create_review/1 with invalid data returns error changeset" do
@@ -91,16 +97,16 @@ defmodule Gumroad.ProductsTest do
     end
 
     test "update_review/2 with valid data updates the review" do
-      review = review_fixture()
-      update_attrs = %{description: "some updated description", rating: 456.7}
+      review = review_fixture() |> Repo.preload(:product)
+      update_attrs = %{description: "some updated description", rating: 456}
 
       assert {:ok, %Review{} = review} = Products.update_review(review, update_attrs)
       assert review.description == "some updated description"
-      assert review.rating == 456.7
+      assert review.rating == 456
     end
 
     test "update_review/2 with invalid data returns error changeset" do
-      review = review_fixture()
+      review = review_fixture() |> Repo.preload(:product)
       assert {:error, %Ecto.Changeset{}} = Products.update_review(review, @invalid_attrs)
       assert review == Products.get_review!(review.id)
     end

@@ -8,6 +8,8 @@ defmodule GumroadWeb.ReviewLiveTest do
   @update_attrs %{description: "some updated description", rating: 456.7}
   @invalid_attrs %{description: nil, rating: nil}
 
+  setup :register_and_log_in_user
+
   defp create_review(_) do
     review = review_fixture()
     %{review: review}
@@ -25,6 +27,7 @@ defmodule GumroadWeb.ReviewLiveTest do
 
     test "saves new review", %{conn: conn} do
       {:ok, index_live, _html} = live(conn, Routes.review_index_path(conn, :index))
+      product = product_fixture()
 
       assert index_live |> element("a", "New Review") |> render_click() =~
                "New Review"
@@ -37,7 +40,7 @@ defmodule GumroadWeb.ReviewLiveTest do
 
       {:ok, _, html} =
         index_live
-        |> form("#review-form", review: @create_attrs)
+        |> form("#review-form", review: Map.merge(@create_attrs, %{product_id: product.id}))
         |> render_submit()
         |> follow_redirect(conn, Routes.review_index_path(conn, :index))
 
