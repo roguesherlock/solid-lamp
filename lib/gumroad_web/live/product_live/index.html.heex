@@ -1,39 +1,43 @@
-<h1>Listing Products</h1>
+<div class="grid gap-8">
+  <h1 class="header">Listing Products</h1>
 
-<%= if @live_action in [:new, :edit] do %>
-  <%= live_modal GumroadWeb.ProductLive.FormComponent,
-    id: @product.id || :new,
-    title: @page_title,
-    action: @live_action,
-    product: @product,
-    return_to: Routes.product_index_path(@socket, :index) %>
-<% end %>
+  <%= if @live_action in [:new, :edit] do %>
+    <%= live_modal GumroadWeb.ProductLive.FormComponent,
+      id: @product.id || :new,
+      title: @page_title,
+      action: @live_action,
+      product: @product,
+      return_to: Routes.product_index_path(@socket, :index) %>
+  <% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Price</th>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="products">
-    <%= for product <- @products do %>
-      <tr id={"product-#{product.id}"}>
-        <td><%= product.name %></td>
-        <td><%= product.description %></td>
-        <td><%= product.price %></td>
-
-        <td>
-          <span><%= live_redirect "Show", to: Routes.product_show_path(@socket, :show, product) %></span>
-          <span><%= live_patch "Edit", to: Routes.product_index_path(@socket, :edit, product) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: product.id, data: [confirm: "Are you sure?"] %></span>
-        </td>
+        <th></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody id="products">
+      <%= for product <- @products do %>
+        <tr id={"product-#{product.id}"}>
+          <td><%= product.name %></td>
+          <td><%= product.description %></td>
+          <td><%= product.price %></td>
 
-<span><%= live_patch "New Product", to: Routes.product_index_path(@socket, :new) %></span>
+          <td>
+            <span class="button button-primary"><%= live_redirect "Show", to: Routes.product_show_path(@socket, :show, product) %></span>
+            <span class="button button-secondary"><%= live_patch "Edit", to: Routes.product_index_path(@socket, :edit, product) %></span>
+            <span class="button button-danger"><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: product.id, data: [confirm: "Are you sure?"] %></span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div>
+    <span class="button button-primary"><%= live_patch "New Product", to: Routes.product_index_path(@socket, :new) %></span>
+  </div>
+</div>

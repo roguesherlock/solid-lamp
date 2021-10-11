@@ -1,5 +1,5 @@
-<div>
-  <h2><%= @title %></h2>
+<div class="grid gap-8">
+  <h2 class="header"><%= @title %></h2>
 
   <.form
     let={f}
@@ -7,22 +7,36 @@
     id="review-form"
     phx-target={@myself}
     phx-change="validate"
-    phx-submit="save">
-
-    <%= label f, :description %>
-    <%= text_input f, :description %>
-    <%= error_tag f, :description %>
-
-    <%= label f, :rating %>
-    <%= number_input f, :rating, step: "any" %>
-    <%= error_tag f, :rating %>
-
-    <%= label f, :product_id %>
-    <%= select f, :product_id, Enum.map(@products, fn p -> {p.name, p.id} end) %>
-    <%= error_tag f, :product_id %>
+    phx-submit="save"
+    class="grid gap-8"
+    >
 
     <div>
-      <%= submit "Save", phx_disable_with: "Saving..." %>
+      <%= label f, :description, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= text_input f, :description %>
+      <p class="block mt-2 text-sm text-red-600">
+        <%= error_tag f, :description %>
+      </p>
+    </div>
+
+    <div>
+      <%= label f, :rating, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= number_input f, :rating, step: "any" %>
+      <p class="block mt-2 text-sm text-red-600">
+        <%= error_tag f, :rating %>
+      </p>
+    </div>
+
+    <div>
+      <%= label f, :product_id, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= select f, :product_id, Enum.map(@products, fn p -> {p.name, p.id} end) %>
+      <p class="block mt-2 text-sm text-red-600">
+        <%= error_tag f, :product_id %>
+      </p>
+    </div>
+
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving...", class: "button button-primary" %>
     </div>
   </.form>
 </div>
