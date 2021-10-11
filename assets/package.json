@@ -1,0 +1,21 @@
+{
+  "name": "gumroad",
+  "version": "1.0.0",
+  "description": "gumroad products spa",
+  "main": "app.js",
+  "author": "Akash",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "deploy": "NODE_ENV=production tailwindcss --postcss --minify --input=css/app.css --output=../priv/static/assets/app.css"
+  },
+  "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.2.1",
+    "@tailwindcss/forms": "^0.3.4",
+    "@tailwindcss/typography": "^0.4.1",
+    "autoprefixer": "^10.3.7",
+    "postcss": "^8.3.9",
+    "prettier": "^2.4.1",
+    "tailwindcss": "^2.2.16"
+  }
+}
