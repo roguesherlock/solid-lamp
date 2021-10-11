@@ -84,6 +84,13 @@ defmodule GumroadWeb.Router do
 
     live "/products/:id", ProductLive.Show, :show
     live "/products/:id/show/edit", ProductLive.Show, :edit
+
+    live "/reviews", ReviewLive.Index, :index
+    live "/reviews/new", ReviewLive.Index, :new
+    live "/reviews/:id/edit", ReviewLive.Index, :edit
+
+    live "/reviews/:id", ReviewLive.Show, :show
+    live "/reviews/:id/show/edit", ReviewLive.Show, :edit
   end
 
   scope "/", GumroadWeb do

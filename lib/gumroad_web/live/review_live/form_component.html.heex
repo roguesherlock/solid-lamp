@@ -1,0 +1,28 @@
+<div>
+  <h2><%= @title %></h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="review-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+
+    <%= label f, :description %>
+    <%= text_input f, :description %>
+    <%= error_tag f, :description %>
+
+    <%= label f, :rating %>
+    <%= number_input f, :rating, step: "any" %>
+    <%= error_tag f, :rating %>
+
+    <%= label f, :product_id %>
+    <%= select f, :product_id, Enum.map(@products, fn p -> {p.name, p.id} end) %>
+    <%= error_tag f, :product_id %>
+
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving..." %>
+    </div>
+  </.form>
+</div>

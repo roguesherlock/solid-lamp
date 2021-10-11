@@ -6,6 +6,7 @@ defmodule Gumroad.Products.Product do
     field :description, :string
     field :name, :string
     field :price, :integer
+    has_many :reviews, Gumroad.Products.Review
 
     timestamps()
   end

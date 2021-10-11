@@ -19,4 +19,19 @@ defmodule Gumroad.ProductsFixtures do
 
     product
   end
+
+  @doc """
+  Generate a review.
+  """
+  def review_fixture(attrs \\ %{}) do
+    {:ok, review} =
+      attrs
+      |> Enum.into(%{
+        description: "some description",
+        rating: 120.5
+      })
+      |> Gumroad.Products.create_review()
+
+    review
+  end
 end
