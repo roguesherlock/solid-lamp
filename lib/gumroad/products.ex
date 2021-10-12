@@ -161,7 +161,20 @@ defmodule Gumroad.Products do
     %Review{}
     |> Review.changeset(attrs)
     |> Repo.insert()
+    |> maybe_broadcast_review()
   end
+
+  defp maybe_broadcast_review({:ok, review} = response) do
+    Phoenix.PubSub.broadcast!(
+      Gumroad.PubSub,
+      "product:#{review.product_id}",
+      {:new_review, GumroadWeb.ReviewView.render("show.json", %{review: review})}
+    )
+
+    response
+  end
+
+  defp maybe_broadcast_review(r), do: r
 
   @doc """
   Updates a review.
