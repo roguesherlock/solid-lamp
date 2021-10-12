@@ -24,9 +24,11 @@ defmodule GumroadWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", GumroadWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", GumroadWeb do
+    pipe_through :api
+
+    resources "/products", ProductController, except: [:new, :edit]
+  end
 
   # Enables LiveDashboard only for development
   #
