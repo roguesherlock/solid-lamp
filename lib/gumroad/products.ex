@@ -165,10 +165,10 @@ defmodule Gumroad.Products do
   end
 
   defp maybe_broadcast_review({:ok, review} = response) do
-    Phoenix.PubSub.broadcast!(
-      Gumroad.PubSub,
+    GumroadWeb.Endpoint.broadcast!(
       "product:#{review.product_id}",
-      {:new_review, GumroadWeb.ReviewView.render("show.json", %{review: review})}
+      "new_review",
+      GumroadWeb.ReviewView.render("show.json", %{review: review})
     )
 
     response
