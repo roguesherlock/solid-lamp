@@ -1,6 +1,7 @@
 defmodule GumroadWeb.ProductView do
   use GumroadWeb, :view
   alias GumroadWeb.ProductView
+  alias GumroadWeb.ReviewView
 
   def render("index.json", %{products: products}) do
     %{data: render_many(products, ProductView, "product.json")}
@@ -17,5 +18,14 @@ defmodule GumroadWeb.ProductView do
       description: product.description,
       price: product.price
     }
+    |> Map.merge(%{
+      reviews: render_relationship(product.reviews, ReviewView, "review.json")
+    })
+  end
+
+  defp render_relationship(%Ecto.Association.NotLoaded{}, _, _), do: nil
+
+  defp render_relationship(relation, view, template) do
+    render_many(relation, view, template)
   end
 end

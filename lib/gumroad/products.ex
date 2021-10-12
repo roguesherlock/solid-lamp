@@ -35,7 +35,7 @@ defmodule Gumroad.Products do
       ** (Ecto.NoResultsError)
 
   """
-  def get_product!(id), do: Repo.get!(Product, id)
+  def get_product!(id), do: Repo.get!(Product, id) |> Repo.preload(:reviews)
 
   @doc """
   Creates a product.
