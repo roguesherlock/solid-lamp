@@ -28,6 +28,21 @@ defmodule GumroadWeb.ReviewLive.FormComponent do
     save_review(socket, socket.assigns.action, review_params)
   end
 
+  defp save_review(socket, :add_review, review_params) do
+    params = Map.merge(%{"product_id" => socket.assigns.product.id}, review_params)
+
+    case Products.create_review(params) do
+      {:ok, _review} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Review created successfully")
+         |> push_redirect(to: socket.assigns.return_to)}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, changeset: changeset)}
+    end
+  end
+
   defp save_review(socket, :edit, review_params) do
     case Products.update_review(socket.assigns.review, review_params) do
       {:ok, _review} ->

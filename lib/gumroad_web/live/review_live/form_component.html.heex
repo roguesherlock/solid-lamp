@@ -11,22 +11,17 @@
     class="grid gap-8"
     >
 
+    <%= text_input f, :rating, class: "hidden" %>
+    <%= live_component(GumroadWeb.ReviewLive.RatingComponent, form: f, field: :rating) %>
     <div>
       <%= label f, :description, class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= text_input f, :description %>
+      <%= textarea f, :description, placeholder: "Start typing...", class: "max-w-lg shadow-sm block w-full focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm border border-gray-300 rounded-md" %>
       <p class="block mt-2 text-sm text-red-600">
         <%= error_tag f, :description %>
       </p>
     </div>
 
-    <div>
-      <%= label f, :rating, class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= number_input f, :rating, step: "any" %>
-      <p class="block mt-2 text-sm text-red-600">
-        <%= error_tag f, :rating %>
-      </p>
-    </div>
-
+    <%= if @action != :add_review do %>
     <div>
       <%= label f, :product_id, class: "block text-sm font-medium text-gray-700 mb-1" %>
       <%= select f, :product_id, Enum.map(@products, fn p -> {p.name, p.id} end) %>
@@ -34,9 +29,10 @@
         <%= error_tag f, :product_id %>
       </p>
     </div>
+    <% end %>
 
     <div>
-      <%= submit "Save", phx_disable_with: "Saving...", class: "button button-primary" %>
+      <%= submit "Submit review", phx_disable_with: "Saving...", class: "button button-secondary" %>
     </div>
   </.form>
 </div>

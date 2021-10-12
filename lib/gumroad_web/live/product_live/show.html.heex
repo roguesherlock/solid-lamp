@@ -1,5 +1,4 @@
-<div class="grid gap-8">
-  <h1 class="header">Show Product</h1>
+<div class="max-w-screen-sm mx-auto py-12">
   <%= if @live_action in [:edit] do %>
     <%= live_modal GumroadWeb.ProductLive.FormComponent,
       id: @product.id,
@@ -8,40 +7,58 @@
       product: @product,
       return_to: Routes.product_show_path(@socket, :show, @product) %>
   <% end %>
-  <div class="">
-    <div class="px-4 py-5 sm:p-0">
-      <dl class="sm:divide-y sm:divide-gray-200">
-        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">
-            Name
-          </dt>
-          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-            <%= @product.name %>
-          </dd>
+  <%= if @live_action in [:add_review] do %>
+    <%= live_modal GumroadWeb.ReviewLive.FormComponent,
+      id: @product.id,
+      title: @page_title,
+      action: @live_action,
+      product: @product,
+      review: @review,
+      return_to: Routes.product_show_path(@socket, :show, @product) %>
+  <% end %>
+  <div class="space-y-6">
+    <h1 class="text-4xl font-extrabold text-gray-900"><%= @product.name %></h1>
+    <div class="flex items-center justify-between text-xl">
+      <div>
+        <h2 class="sr-only">Reviews</h2>
+        <div class="flex gap-2 items-center">
+          <p class="text-gray-900 font-medium text-3xl">
+            <%= Float.round(@average_rating, 1) %>
+            <span class="sr-only"> out of 5 stars</span>
+          </p>
+          <div class="flex items-center">
+          <%= for _ <- 1..round(@average_rating) do %>
+            <!--
+              Heroicon name: solid/star
+
+              Active: "text-yellow-400", Inactive: "text-gray-200"
+            -->
+            <svg class="text-yellow-400 h-8 w-8 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+          <% end %>
+          <%= for _ <- 1..round(5 - @average_rating) do %>
+            <svg class="text-gray-200 h-8 w-8 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+            <% end %>
+          </div>
         </div>
-        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">
-          Description
-          </dt>
-          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-            <%= @product.description %>
-          </dd>
-        </div>
-        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">
-            Price
-          </dt>
-          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-            $<%= @product.price %>
-          </dd>
-        </div>
-      </dl>
+      </div>
+      <div>
+          <span class="button button-secondary"><%= live_patch "Add review", to: Routes.product_show_path(@socket, :add_review, @product.id) %></span>
+      </div>
     </div>
   </div>
-
-
-  <div class="flex gap-5">
-    <span class="button button-primary"><%= live_patch "Edit", to: Routes.product_show_path(@socket, :edit, @product) %></span>
-    <span class="button button-secondary"><%= live_redirect "Back", to: Routes.product_index_path(@socket, :index) %></span>
+  <div class="border border-t border-gray-200 mt-8"></div>
+  <div class="mt-8">
+    <div class="px-4 py-5 sm:p-0">
+      <h1 class="text-3xl font-bold text-gray-900">Reviews</h1>
+      <dl class="space-y-4 mt-6">
+        <%= for review <- @reviews do %>
+          <%= live_component(GumroadWeb.ReviewLive.ReviewComponent, review: review) %>
+        <% end %>
+      </dl>
+    </div>
   </div>
 </div>

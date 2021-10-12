@@ -53,4 +53,8 @@
   input {
     @apply block w-full sm:text-sm rounded-md border-gray-300 focus:ring-sky-500 focus:border-sky-500;
   }
+
+  .rate input {
+    @apply hidden;
+  }
 }

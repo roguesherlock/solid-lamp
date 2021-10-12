@@ -121,6 +121,14 @@ defmodule Gumroad.Products do
     Repo.all(Review) |> Repo.preload(:product)
   end
 
+  def list_reviews_for_product(%Product{id: id}) do
+    query =
+      from r in Review,
+        where: r.product_id == ^id
+
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single review.
 
