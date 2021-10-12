@@ -28,6 +28,7 @@ defmodule GumroadWeb.Router do
     pipe_through :api
 
     resources "/products", ProductController, except: [:new, :edit]
+    resources "/reviews", ReviewController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
