@@ -11,7 +11,9 @@ defmodule GumroadWeb.Endpoint do
     signing_salt: "CbWHhhco"
   ]
 
-  socket "/socket", GumroadWeb.UserSocket, websocket: [connect_info: [session: @session_options]]
+  socket "/socket", GumroadWeb.UserSocket,
+    websocket: [connect_info: [session: @session_options], check_origin: false]
+
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
